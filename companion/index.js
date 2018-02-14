@@ -1,14 +1,9 @@
-/*
- * Entry point for the companion app
- */
-
 import { geolocation } from "geolocation";
 import * as messaging from "messaging";
 import { me } from "companion";
 import { sendVal, stripQuotes } from "../common/utils.js";
 import { settingsStorage } from "settings";
 
-console.log("Companion Started");
 var locationString = "";
 
 messaging.peerSocket.onopen = function() {
@@ -30,7 +25,6 @@ messaging.peerSocket.onmessage = function(evt) {
 }
 
 function sendMetarData(param) {
-  console.log("Param is " + param);
   return new Promise(function(resolve, reject) {
     fetch(param).then(function(response) {
       return response.json();

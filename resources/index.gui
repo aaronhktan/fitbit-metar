@@ -1,24 +1,30 @@
 <svg class="background">
-  <textarea id="banner-text"
-        x="0" y="12"
-        height="33%" width="100%"
-        text-anchor="middle"
-        display-align="center">Get METAR for...
-  </textarea>
-  <use id="location" class="button" href="#square-button-icon" y="101" fill="fb-cyan">
-    <set href="#text"  attributeName="text-buffer" to="Location" />
-    <set href="#image" attributeName="href" to="location.png" />
-  </use>
-  <use id="favourite" class="button" href="#square-button-icon" y="178" fill="fb-magenta">
-    <set href="#text"  attributeName="text-buffer" to="Favourite" />
-    <set href="#image" attributeName="href" to="favourite.png" />
-  </use>
   
-  <textarea id="loading-text"
-            text-anchor="middle"
-            x="5%" width="90%"
-            display-align="center">Waiting for connection to phone...
-  </textarea>
+  <g id="main-menu">
+    <textarea id="banner-text"
+          x="0" y="12"
+          height="33%" width="100%"
+          text-anchor="middle"
+          display-align="center">Get METAR for...
+    </textarea>
+    <use id="location" class="button" href="#square-button-icon" y="101" fill="fb-cyan">
+      <set href="#text"  attributeName="text-buffer" to="Location" />
+      <set href="#image" attributeName="href" to="location.png" />
+    </use>
+    <use id="favourite" class="button" href="#square-button-icon" y="178" fill="fb-magenta">
+      <set href="#text"  attributeName="text-buffer" to="Favourite" />
+      <set href="#image" attributeName="href" to="favourite.png" />
+    </use>
+  </g>
+  
+  <g id="loading">
+    <textarea id="loading-text"
+              text-anchor="middle"
+              x="5%" width="90%"
+              display-align="center">Waiting for connection to phone...
+    </textarea>
+    <image x="50%-70" y="50%-70" width="140" height="140" href="loading.png" load="sync" />
+  </g>
 
   <use href="#scrollview" id="scrollview">
     <use href="#scrollview-item" id="section-1" height="100%">

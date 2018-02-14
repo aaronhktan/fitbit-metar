@@ -1,13 +1,8 @@
-#back {
-  display: inline;
-}
-
-.button {
+#main-menu {
   display: none;
 }
 
 #banner-text {
-  display: none;
   fill: white;
   font-size: 40;
   font-family: System-Regular;
