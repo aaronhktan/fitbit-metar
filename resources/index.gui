@@ -1,0 +1,50 @@
+<svg class="background">
+  <textarea id="banner-text"
+        x="0" y="12"
+        height="33%" width="100%"
+        text-anchor="middle"
+        display-align="center">Get METAR for...
+  </textarea>
+  <use id="location" class="button" href="#square-button-icon" y="101" fill="fb-cyan">
+    <set href="#text"  attributeName="text-buffer" to="Location" />
+    <set href="#image" attributeName="href" to="location.png" />
+  </use>
+  <use id="favourite" class="button" href="#square-button-icon" y="178" fill="fb-magenta">
+    <set href="#text"  attributeName="text-buffer" to="Favourite" />
+    <set href="#image" attributeName="href" to="favourite.png" />
+  </use>
+  
+  <textarea id="loading-text"
+            text-anchor="middle"
+            x="5%" width="90%"
+            display-align="center">Waiting for connection to phone...
+  </textarea>
+
+  <use href="#scrollview" id="scrollview">
+    <use href="#scrollview-item" id="section-1" height="100%">
+      <textarea id="metar-title"
+                x="5%" y="0"
+                width="90%"
+                text-anchor="middle"
+                display-align="center">Loading...</textarea>
+    </use>
+    <use href="#scrollview-item" id="section-2" height="150%">
+      <line x1="0" y1="0" x2="100%" y2="0" fill="darkgrey" stroke-width="2" />
+      <textarea id="metar-info"
+                x="5%" y="0"
+                height="100%" width="90%"
+                text-anchor="start"
+                display-align="center">...</textarea>
+      <line x1="0" y1="100%-1" x2="100%" y2="100%-1" fill="darkgrey" stroke-width="1" />
+    </use>
+    <use href="#scrollview-item" id="section-3" height="175%">
+      <line x1="0" y1="0" x2="100%" y2="0" fill="darkgrey" stroke-width="1" />
+      <textarea id="metar-translate"
+                x="5%" y="0"
+                height="100%" width="90%"
+                text-anchor="start"
+                display-align="center">...</textarea>
+      <line x1="0" y1="100%-2" x2="100%" y2="100%-2" fill="darkgrey" stroke-width="2" />
+    </use>
+  </use>
+</svg>

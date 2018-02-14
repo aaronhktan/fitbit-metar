@@ -1,0 +1,18 @@
+{
+  "fitbit": {
+    "appUUID": "999b12bc-90b7-4839-90a2-4430423ddf07",
+    "appType": "app",
+    "appDisplayName": "METAR",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "#03a9f4",
+    "requestedPermissions": [
+      "access_location",
+      "access_internet"
+    ],
+    "i18n": {
+      "en": {
+        "name": "METAR"
+      }
+    }
+  }
+}
