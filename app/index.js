@@ -1,10 +1,11 @@
 import document from "document";
+import * as haptics from "haptics";
 import * as messaging from "messaging";
 import { sendVal, stripQuotes } from "../common/utils.js";
 import { display } from "display";
 display.autoOff = false;
 
-var state = "starting"; // Possible states are starting, disconnected, menu, loading, complete, failed
+var state = "starting"; // Possible states are starting, disconnected, menu, loading-favourite, loading-location, complete, failed
 var favouriteStation = "";
 var timer, timerSet = false;
 let mainMenu = document.getElementById("main-menu");
@@ -44,7 +45,7 @@ messaging.peerSocket.onmessage = function(evt) {
   } else if (evt.data.key == "station-identifier") {
     favouriteStation = JSON.parse(evt.data.newValue).name;
   } else if (evt.data.hasOwnProperty("Raw-Report")) {
-    if (state == "loading") {
+    if (state == "loading-location" || (state == "loading-favourite" && evt.data.Info.ICAO == favouriteStation)) {
       state = "complete";
       metarTitle.text = evt.data["Raw-Report"];
 
@@ -79,46 +80,54 @@ messaging.peerSocket.onmessage = function(evt) {
 }
 
 locationButton.onclick = function(evt) {
-  state = "loading";
+  state = "loading-location";
+  haptics.vibration.start("confirmation");
+  
   if (timerSet) {
     clearTimeout(timer);
+    timerSet = false;
   }
   var timer = setTimeout(function() {
-    if (state != "menu" && state != "complete") {
+    if (state == "loading-location") {
       state = "failed";
       loadingText.text = "This is taking a while... Check your Internet connection and connection to your phone.";
     }
   }, 15000);
   timerSet = true;
+  
   let data = {
     key: "buttonPress",
     value: "location"
   };
   sendVal(data);
+  
   mainMenu.style.display = "none";
   loadingText.text = "Sit tight, we're getting your location and grabbing METAR...";
   loading.style.display = "inline";
 }
 
 favouriteButton.onclick = function(evt) {
-  state = "loading";
+  state = "loading-favourite";
+  haptics.vibration.start("confirmation");
+  
   if (timerSet) {
     clearTimeout(timer);
+    timerSet = false;
   }
   var timer = setTimeout(function() {
-    if (state != "menu" && state != "complete") {
+    if (state == "loading-favourite") {
       state = "failed";
       loadingText.text = "This is taking a while... Check your Internet connection and connection to your phone.";
     }
   }, 15000);
   timerSet = true;
-  let data = {
-    key: "buttonPress",
-    value: "favourite"
-  };
   
   if (favouriteStation != "") {
     loadingText.text = "Grabbing METAR for station " + favouriteStation + "...";
+    let data = {
+      key: "buttonPress",
+      value: "favourite"
+    };
     sendVal(data);
   } else {
     state = "complete";
