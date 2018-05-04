@@ -36,7 +36,7 @@ function sendMetarData(param) {
       sendVal("error");
       reject(error);
     });
-  }); 
+  });
 }
 
 settingsStorage.onchange = evt => {

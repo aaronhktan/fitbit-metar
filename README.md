@@ -1,7 +1,7 @@
 # Fitbit METAR
-A METAR app for the Fitbit Ionic.
+A METAR app for the Fitbit Ionic and Versa.
 
-![alt](/screenshots/METAR-landing.png?raw=true)
-![alt](/screenshots/METAR-location-loading_v2.png?raw=true)
-![alt](/screenshots/METAR-favourite.png?raw=true)
-![alt](/screenshots/METAR-location.png?raw=true)
+![alt](/docs/screenshots/METAR-landing.png?raw=true)
+![alt](/docs/screenshots/METAR-location-loading_v2.png?raw=true)
+![alt](/docs/screenshots/METAR-favourite.png?raw=true)
+![alt](/docs/screenshots/METAR-location.png?raw=true)

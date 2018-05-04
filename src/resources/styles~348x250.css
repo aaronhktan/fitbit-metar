@@ -9,6 +9,16 @@
   font-weight: bold;
   text-anchor: middle;
   text-length: 99;
+  x: 0;
+  y: 12;
+}
+
+#location {
+  y: 101;
+}
+
+#favourite {
+  y: 178;
 }
 
 #loading-text {

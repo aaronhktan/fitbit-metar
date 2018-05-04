@@ -2,16 +2,15 @@
   
   <g id="main-menu">
     <textarea id="banner-text"
-          x="0" y="12"
           height="33%" width="100%"
           text-anchor="middle"
           display-align="center">Get METAR for...
     </textarea>
-    <use id="location" class="button" href="#square-button-icon" y="101" fill="fb-cyan">
+    <use id="location" class="button" href="#square-button-icon" fill="fb-cyan">
       <set href="#text"  attributeName="text-buffer" to="Location" />
       <set href="#image" attributeName="href" to="location.png" />
     </use>
-    <use id="favourite" class="button" href="#square-button-icon" y="178" fill="fb-magenta">
+    <use id="favourite" class="button" href="#square-button-icon" fill="fb-magenta">
       <set href="#text"  attributeName="text-buffer" to="Favourite" />
       <set href="#image" attributeName="href" to="favourite.png" />
     </use>

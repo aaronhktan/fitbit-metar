@@ -3,29 +3,22 @@ import * as haptics from "haptics";
 import * as messaging from "messaging";
 import { sendVal, stripQuotes } from "../common/utils.js";
 import { display } from "display";
-display.autoOff = false;
 
+import UI from './ui';
+
+var ui = new UI();
+
+display.autoOff = false;
 var state = "starting"; // Possible states are starting, disconnected, menu, loading-favourite, loading-location, complete, failed
 var favouriteStation = "";
 var timer, timerSet = false;
-let mainMenu = document.getElementById("main-menu");
-let locationButton = document.getElementById("location");
-let favouriteButton = document.getElementById("favourite");
-let loading = document.getElementById("loading");
-let loadingText = document.getElementById("loading-text");
-let scrollview = document.getElementById("scrollview");
-let metarTitle = document.getElementById("metar-title");
-let metarInfo = document.getElementById("metar-info");
-let metarTranslate = document.getElementById("metar-translate");
 
 document.onkeypress = function(evt) {
   if (evt.key == "back") {
     if (state == "complete" || state == "failed") {
       state = "mainMenu";
       evt.preventDefault();
-      loading.style.display = "none";
-      mainMenu.style.display = "inline";
-      scrollview.style.display = "none";
+      ui.showMainMenu();
     }
   }
 }
@@ -33,28 +26,27 @@ document.onkeypress = function(evt) {
 messaging.peerSocket.onopen = function() {
   state = "menu";
   setTimeout(function() {
-    mainMenu.style.display = "inline";
-    loading.style.display = "none";
+    ui.showMainMenu();
   }, 1000);
 }
 
 messaging.peerSocket.onmessage = function(evt) {
   if (evt.data.key == "primary-color") {
     let color = stripQuotes(evt.data.newValue);
-    metarTitle.style.fill = color;
+    ui.metarTitle.style.fill = color;
   } else if (evt.data.key == "station-identifier") {
     favouriteStation = JSON.parse(evt.data.newValue).name;
   } else if (evt.data.hasOwnProperty("Raw-Report")) {
     if (state == "loading-location" || (state == "loading-favourite" && evt.data.Info.ICAO == favouriteStation)) {
       state = "complete";
-      metarTitle.text = evt.data["Raw-Report"];
+      ui.metarTitle.text = evt.data["Raw-Report"];
 
       var info = "";
       for (var i in evt.data.Info) {
         info = info + i + ": "+ evt.data.Info[i] + "\n";
       }
-      metarInfo.style.textLength = info.length;
-      metarInfo.text = info;
+      ui.metarInfo.style.textLength = info.length;
+      ui.metarInfo.text = info;
 
       var translate = "";
       for (var i in evt.data.Translations) {
@@ -67,19 +59,18 @@ messaging.peerSocket.onmessage = function(evt) {
           translate += i + ": " + evt.data.Translations[i] + "\n";
         }
       }
-      metarTranslate.style.textLength = translate.length;
-      metarTranslate.text = translate;
+      ui.metarTranslate.style.textLength = translate.length;
+      ui.metarTranslate.text = translate;
 
-      loading.style.display = "none";
-      scrollview.style.display = "inline";
+      ui.showScrollview();
     }
   } else {
     state = "failed";
-    loadingText.text = "Something went wrong. Try relaunching the app.";
+    ui.loadingText.text = "Something went wrong. Try relaunching the app.";
   }
 }
 
-locationButton.onclick = function(evt) {
+ui.locationButton.onclick = function(evt) {
   state = "loading-location";
   haptics.vibration.start("confirmation");
   
@@ -90,7 +81,7 @@ locationButton.onclick = function(evt) {
   var timer = setTimeout(function() {
     if (state == "loading-location") {
       state = "failed";
-      loadingText.text = "This is taking a while... Check your Internet connection and connection to your phone.";
+      ui.loadingText.text = "This is taking a while... Check your Internet connection and connection to your phone.";
     }
   }, 15000);
   timerSet = true;
@@ -101,12 +92,11 @@ locationButton.onclick = function(evt) {
   };
   sendVal(data);
   
-  mainMenu.style.display = "none";
-  loadingText.text = "Sit tight, we're getting your location and grabbing METAR...";
-  loading.style.display = "inline";
+  ui.showLoadingScreen();
+  ui.loadingText.text = "Sit tight, we're getting your location and grabbing METAR...";
 }
 
-favouriteButton.onclick = function(evt) {
+ui.favouriteButton.onclick = function(evt) {
   state = "loading-favourite";
   haptics.vibration.start("confirmation");
   
@@ -117,13 +107,13 @@ favouriteButton.onclick = function(evt) {
   var timer = setTimeout(function() {
     if (state == "loading-favourite") {
       state = "failed";
-      loadingText.text = "This is taking a while... Check your Internet connection and connection to your phone.";
+      ui.loadingText.text = "This is taking a while... Check your Internet connection and connection to your phone.";
     }
   }, 15000);
   timerSet = true;
   
   if (favouriteStation != "") {
-    loadingText.text = "Grabbing METAR for station " + favouriteStation + "...";
+    ui.loadingText.text = "Grabbing METAR for station " + favouriteStation + "...";
     let data = {
       key: "buttonPress",
       value: "favourite"
@@ -131,16 +121,15 @@ favouriteButton.onclick = function(evt) {
     sendVal(data);
   } else {
     state = "complete";
-    loadingText.text = "No favourite station set; check your settings!";
+    ui.loadingText.text = "No favourite station set; check your settings!";
   }
   
-  mainMenu.style.display = "none";
-  loading.style.display = "inline";
+  ui.showLoadingScreen();
 }
 
 setTimeout(function() {
   if (state == "starting") {
     state = "disconnected";
-    loadingText.text = "This is taking a while... Check that your watch is connected to your phone.";
+    ui.loadingText.text = "This is taking a while... Check that your watch is connected to your phone.";
   }
 }, 10000);

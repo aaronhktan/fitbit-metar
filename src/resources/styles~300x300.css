@@ -1,0 +1,62 @@
+#main-menu {
+  display: none;
+}
+
+#banner-text {
+  fill: white;
+  font-size: 40;
+  font-family: System-Regular;
+  font-weight: bold;
+  text-anchor: middle;
+  text-length: 99;
+  y: 33;
+}
+
+#location {
+  y: 164;
+}
+
+#favourite {
+  y: 233;
+}
+
+#loading-text {
+  display: inline;
+  fill: white;
+  font-size: 32;
+  font-family: System-Regular;
+  font-weight: bold;
+  text-anchor: middle;
+  text-length: 99;
+}
+
+#scrollview {
+  display: none;
+}
+
+#metar-title {
+  fill: lightskyblue;
+  font-size: 32;
+  font-family: System-Regular;
+  font-weight: bold;
+  text-anchor: middle;
+  text-length: 99;
+}
+
+#metar-info {
+  fill: white;
+  font-size: 25;
+  font-family: System-Regular;
+  font-weight: bold;
+  text-anchor: middle;
+  text-length: 999;
+}
+
+#metar-translate {
+  fill: white;
+  font-size: 24;
+  font-family: System-Regular;
+  font-weight: bold;
+  text-anchor: middle;
+  text-length: 999;
+}
