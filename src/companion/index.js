@@ -6,11 +6,11 @@ import { settingsStorage } from "settings";
 
 var locationString = "";
 
-messaging.peerSocket.onopen = function() {
+messaging.peerSocket.onopen = () => {
   restoreSettings();
 }
 
-messaging.peerSocket.onmessage = function(evt) {
+messaging.peerSocket.onmessage = evt => {
   var info = evt.data.value;
   var url = "";
   if (info === "location") {
@@ -29,8 +29,13 @@ function sendMetarData(param) {
     fetch(param).then(function(response) {
       return response.json();
     }).then(function(json) {
-      sendVal(json);
-      resolve(json);
+      let sendJSON = {
+        'Info': json.Info,
+        'Raw-Report': json['Raw-Report'],
+        'Translations': json.Translations,
+      }
+      sendVal(sendJSON);
+      resolve(sendJSON);
     }).catch(function(error) {
       console.log("Fetching failed due to error: " + error);
       sendVal("error");

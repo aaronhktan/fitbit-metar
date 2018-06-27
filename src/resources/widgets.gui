@@ -6,4 +6,9 @@
     <link rel="import" href="/mnt/sysassets/widgets/baseview_widget.gui" />
     <link rel="import" href="/mnt/sysassets/widgets/scrollview_widget.gui" />
   </defs>
+  
+  <symbol id="dynamic-textarea" class="dynamic-textarea" type="dynamic-textarea" 
+          width="100%" >
+    <textarea id="text" />
+  </symbol>
 </svg>

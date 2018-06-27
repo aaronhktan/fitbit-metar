@@ -30,23 +30,25 @@ messaging.peerSocket.onopen = function() {
   }, 1000);
 }
 
-messaging.peerSocket.onmessage = function(evt) {
+messaging.peerSocket.onmessage = evt => {
   if (evt.data.key == "primary-color") {
     let color = stripQuotes(evt.data.newValue);
     ui.metarTitle.style.fill = color;
   } else if (evt.data.key == "station-identifier") {
     favouriteStation = JSON.parse(evt.data.newValue).name;
   } else if (evt.data.hasOwnProperty("Raw-Report")) {
-    if (state == "loading-location" || (state == "loading-favourite" && evt.data.Info.ICAO == favouriteStation)) {
+    // console.log(JSON.stringify(evt.data));
+    if (state == "loading-location" || 
+        (state == "loading-favourite" && evt.data.Info.ICAO == favouriteStation)) {
       state = "complete";
       ui.metarTitle.text = evt.data["Raw-Report"];
 
       var info = "";
       for (var i in evt.data.Info) {
-        info = info + i + ": "+ evt.data.Info[i] + "\n";
+        info = info + i + ": "+ (evt.data.Info[i] == "" ? "---" : evt.data.Info[i]) + "\n";
       }
-      ui.metarInfo.style.textLength = info.length;
-      ui.metarInfo.text = info;
+      // console.log(info);
+      ui.setMetarInfoText(info);
 
       var translate = "";
       for (var i in evt.data.Translations) {
@@ -56,11 +58,11 @@ messaging.peerSocket.onmessage = function(evt) {
             translate += "    " + j + ": " + evt.data.Translations.Remarks[j] + "\n"; 
           }
         } else {
-          translate += i + ": " + evt.data.Translations[i] + "\n";
+          translate += i + ": " + (evt.data.Translations[i] == "" ? "---" : evt.data.Translations[i]) + "\n";
         }
       }
-      ui.metarTranslate.style.textLength = translate.length;
-      ui.metarTranslate.text = translate;
+      // console.log(translate);
+      ui.setMetarTranslateText(translate);
 
       ui.showScrollview();
     }
@@ -96,7 +98,7 @@ ui.locationButton.onclick = function(evt) {
   ui.loadingText.text = "Sit tight, we're getting your location and grabbing METAR...";
 }
 
-ui.favouriteButton.onclick = function(evt) {
+ui.favouriteButton.onclick = evt => {
   state = "loading-favourite";
   haptics.vibration.start("confirmation");
   
@@ -104,7 +106,7 @@ ui.favouriteButton.onclick = function(evt) {
     clearTimeout(timer);
     timerSet = false;
   }
-  var timer = setTimeout(function() {
+  var timer = setTimeout(() => {
     if (state == "loading-favourite") {
       state = "failed";
       ui.loadingText.text = "This is taking a while... Check your Internet connection and connection to your phone.";
@@ -127,7 +129,7 @@ ui.favouriteButton.onclick = function(evt) {
   ui.showLoadingScreen();
 }
 
-setTimeout(function() {
+setTimeout(() => {
   if (state == "starting") {
     state = "disconnected";
     ui.loadingText.text = "This is taking a while... Check that your watch is connected to your phone.";

@@ -1,5 +1,10 @@
 <svg class="background">
   
+  <symbol id="view-header" href="#scrollview-header">
+    <rect fill="inherit" x="0" y="0" width="100%" height="100%"/>
+    <text id="text" x="5%" y="50%+10" fill="white" font-size="25"/>
+  </symbol>
+  
   <g id="main-menu">
     <textarea id="banner-text"
           height="33%" width="100%"
@@ -33,23 +38,47 @@
                 text-anchor="middle"
                 display-align="center">Loading...</textarea>
     </use>
-    <use href="#scrollview-item" id="section-2" height="150%">
-      <line x1="0" y1="0" x2="100%" y2="0" fill="darkgrey" stroke-width="2" />
+    <use href="#scrollview-item" id="section-2" height="0">
+      <use href="#view-header" height="30" fill="dimgrey">
+        <set href="#text" attributeName="text-buffer" to="METAR Info" />
+      </use>
       <textarea id="metar-info"
                 x="5%" y="0"
                 height="100%" width="90%"
                 text-anchor="start"
                 display-align="center">...</textarea>
-      <line x1="0" y1="100%-1" x2="100%" y2="100%-1" fill="darkgrey" stroke-width="1" />
+      <use id="hidden-metar-info" href="#dynamic-textarea">
+        <set href="text" attributeName="font-family" to="System-Regular" />
+        <set href="text" attributeName="font-size" to="25" />
+        <set href="text" attributeName="font-weight" to="bold" />
+        <set href="text" attributeName="text-length" to="999" />
+        <set href="text" attributeName="fill" to="white" />
+        <set href="text" attributeName="x" to="5%" />
+        <set href="text" attributeName="y" to="0" />
+        <set href="text" attributeName="width" to="90%" />
+        <set href="text" attributeName="opacity" to="0" />
+      </use>
     </use>
-    <use href="#scrollview-item" id="section-3" height="175%">
-      <line x1="0" y1="0" x2="100%" y2="0" fill="darkgrey" stroke-width="1" />
+    <use href="#scrollview-item" id="section-3" height="0">
+      <use href="#view-header" height="30" fill="dimgrey">
+        <set href="#text" attributeName="text-buffer" to="METAR Translation" />
+      </use>
       <textarea id="metar-translate"
                 x="5%" y="0"
                 height="100%" width="90%"
                 text-anchor="start"
                 display-align="center">...</textarea>
-      <line x1="0" y1="100%-2" x2="100%" y2="100%-2" fill="darkgrey" stroke-width="2" />
+      <use id="hidden-metar-translate" href="#dynamic-textarea">
+        <set href="text" attributeName="font-family" to="System-Regular" />
+        <set href="text" attributeName="font-size" to="25" />
+        <set href="text" attributeName="font-weight" to="bold" />
+        <set href="text" attributeName="text-length" to="999" />
+        <set href="text" attributeName="fill" to="white" />
+        <set href="text" attributeName="x" to="5%" />
+        <set href="text" attributeName="y" to="0" />
+        <set href="text" attributeName="width" to="90%" />
+        <set href="text" attributeName="opacity" to="0" />
+      </use>
     </use>
   </use>
 </svg>
