@@ -1,9 +1,64 @@
 <svg class="background">
+  <defs>
+    <!-- Template Symbol for the header -->
+    <symbol id="view-header" href="#scrollview-header">
+      <rect fill="inherit" x="0" y="0" width="100%" height="100%"/>
+      <text id="text" x="5" y="50%+10" fill="white" font-size="30"
+        font-weight="bold" />
+    </symbol>
+  </defs>
   
-  <symbol id="view-header" href="#scrollview-header">
-    <rect fill="inherit" x="0" y="0" width="100%" height="100%"/>
-    <text id="text" x="5%" y="50%+10" fill="white" font-size="25"/>
-  </symbol>
+  <use id="hidden-metar-title" href="#dynamic-textarea">
+    <set href="text" attributeName="font-family" to="System-Regular" />
+    <set href="text" attributeName="font-size" to="32" />
+    <set href="text" attributeName="font-weight" to="bold" />
+    <set href="text" attributeName="text-length" to="999" />
+    <set href="text" attributeName="fill" to="white" />
+    <set href="text" attributeName="x" to="5%" />
+    <set href="text" attributeName="y" to="0" />
+    <set href="text" attributeName="width" to="90%" />
+    <set href="text" attributeName="opacity" to="0" />
+    <set href="text" attributeName="pointer-events" to="none" />
+  </use>
+  
+  <use id="hidden-metar-translate" href="#dynamic-textarea">
+    <set href="text" attributeName="font-family" to="System-Regular" />
+    <set href="text" attributeName="font-size" to="25" />
+    <set href="text" attributeName="font-weight" to="bold" />
+    <set href="text" attributeName="text-length" to="999" />
+    <set href="text" attributeName="fill" to="white" />
+    <set href="text" attributeName="x" to="5%" />
+    <set href="text" attributeName="y" to="0" />
+    <set href="text" attributeName="width" to="90%" />
+    <set href="text" attributeName="opacity" to="0" />
+    <set href="text" attributeName="pointer-events" to="none" />
+  </use>
+  
+  <use id="hidden-metar-info" href="#dynamic-textarea">
+    <set href="text" attributeName="font-family" to="System-Regular" />
+    <set href="text" attributeName="font-size" to="25" />
+    <set href="text" attributeName="font-weight" to="bold" />
+    <set href="text" attributeName="text-length" to="999" />
+    <set href="text" attributeName="fill" to="white" />
+    <set href="text" attributeName="x" to="5%" />
+    <set href="text" attributeName="y" to="0" />
+    <set href="text" attributeName="width" to="90%" />
+    <set href="text" attributeName="opacity" to="0" />
+    <set href="text" attributeName="pointer-events" to="none" />
+  </use>
+  
+  <use id="hidden-metar-remarks" href="#dynamic-textarea">
+    <set href="text" attributeName="font-family" to="System-Regular" />
+    <set href="text" attributeName="font-size" to="25" />
+    <set href="text" attributeName="font-weight" to="bold" />
+    <set href="text" attributeName="text-length" to="999" />
+    <set href="text" attributeName="fill" to="white" />
+    <set href="text" attributeName="x" to="5%" />
+    <set href="text" attributeName="y" to="0" />
+    <set href="text" attributeName="width" to="90%" />
+    <set href="text" attributeName="opacity" to="0" />
+    <set href="text" attributeName="pointer-events" to="none" />
+  </use>
   
   <g id="main-menu">
     <textarea id="banner-text"
@@ -30,55 +85,62 @@
     <image x="50%-70" y="50%-70" width="140" height="140" href="loading.png" load="sync" />
   </g>
 
-  <use href="#scrollview" id="scrollview">
-    <use href="#scrollview-item" id="section-1" height="100%">
-      <textarea id="metar-title"
-                x="5%" y="0"
-                width="90%"
-                text-anchor="middle"
-                display-align="center">Loading...</textarea>
-    </use>
-    <use href="#scrollview-item" id="section-2" height="0">
-      <use href="#view-header" height="30" fill="dimgrey">
-        <set href="#text" attributeName="text-buffer" to="METAR Info" />
-      </use>
-      <textarea id="metar-info"
-                x="5%" y="0"
-                height="100%" width="90%"
-                text-anchor="start"
-                display-align="center">...</textarea>
-      <use id="hidden-metar-info" href="#dynamic-textarea">
-        <set href="text" attributeName="font-family" to="System-Regular" />
-        <set href="text" attributeName="font-size" to="25" />
-        <set href="text" attributeName="font-weight" to="bold" />
-        <set href="text" attributeName="text-length" to="999" />
-        <set href="text" attributeName="fill" to="white" />
-        <set href="text" attributeName="x" to="5%" />
-        <set href="text" attributeName="y" to="0" />
-        <set href="text" attributeName="width" to="90%" />
-        <set href="text" attributeName="opacity" to="0" />
+  <use id="panoramaview" href="#panoramaview">    
+    <use id="view-1" href="#panoramaview-item">
+       <use href="#scrollview">
+        <use id="scrollview-1" href="#scrollview-item">
+          <textarea id="metar-title"
+                    x="5%" y="30"
+                    width="90%"
+                    height="100%"
+                    text-anchor="middle"
+                    display-align="center">Loading...</textarea>
+        </use>
       </use>
     </use>
-    <use href="#scrollview-item" id="section-3" height="0">
-      <use href="#view-header" height="30" fill="dimgrey">
-        <set href="#text" attributeName="text-buffer" to="METAR Translation" />
+    <use id="view-2" href="#panoramaview-item">
+     <use href="#scrollview">
+      <use id="scrollview-2" href="#scrollview-item">
+        <textarea id="metar-info"
+                  x="5%" y="30"
+                  height="100%" width="90%"
+                  text-anchor="start"
+                  display-align="before">Info...</textarea>
+       </use>
       </use>
-      <textarea id="metar-translate"
-                x="5%" y="0"
-                height="100%" width="90%"
-                text-anchor="start"
-                display-align="center">...</textarea>
-      <use id="hidden-metar-translate" href="#dynamic-textarea">
-        <set href="text" attributeName="font-family" to="System-Regular" />
-        <set href="text" attributeName="font-size" to="25" />
-        <set href="text" attributeName="font-weight" to="bold" />
-        <set href="text" attributeName="text-length" to="999" />
-        <set href="text" attributeName="fill" to="white" />
-        <set href="text" attributeName="x" to="5%" />
-        <set href="text" attributeName="y" to="0" />
-        <set href="text" attributeName="width" to="90%" />
-        <set href="text" attributeName="opacity" to="0" />
+    </use>
+    <use id="view-3" href="#panoramaview-item">
+     <use href="#scrollview">
+      <use id="scrollview-3" href="#scrollview-item">
+        <textarea id="metar-translate"
+                  x="5%" y="30"
+                  height="100%" width="90%"
+                  text-anchor="start"
+                  display-align="before">Translation...</textarea>
+       </use>
       </use>
+    </use>
+    <use id="view-4" href="#panoramaview-item">
+     <use href="#scrollview">
+      <use id="scrollview-4" href="#scrollview-item">
+        <textarea id="metar-remarks"
+                  x="5%" y="30"
+                  height="100%" width="90%"
+                  text-anchor="start"
+                  display-align="before">Remarks...</textarea>
+       </use>
+      </use>
+    </use>
+
+    <rect x="0" y="0" width="100%" height="30" fill="black" />
+
+    <!-- Have enough pagination dots for your slides (extras are hidden) -->
+    <use id="pagination-dots" href="#pagination-widget" y="10">
+      <use href="#pagination-dot" />
+      <use href="#pagination-dot" />
+      <use href="#pagination-dot" />
+      <use href="#pagination-dot" />
+      <use href="#pagination-highlight-dot" />
     </use>
   </use>
 </svg>

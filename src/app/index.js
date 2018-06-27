@@ -32,37 +32,44 @@ messaging.peerSocket.onopen = function() {
 
 messaging.peerSocket.onmessage = evt => {
   if (evt.data.key == "primary-color") {
-    let color = stripQuotes(evt.data.newValue);
+    let color = JSON.parse(evt.data.newValue);
     ui.metarTitle.style.fill = color;
   } else if (evt.data.key == "station-identifier") {
     favouriteStation = JSON.parse(evt.data.newValue).name;
   } else if (evt.data.hasOwnProperty("Raw-Report")) {
-    // console.log(JSON.stringify(evt.data));
     if (state == "loading-location" || 
         (state == "loading-favourite" && evt.data.Info.ICAO == favouriteStation)) {
       state = "complete";
-      ui.metarTitle.text = evt.data["Raw-Report"];
+      ui.setMetarTitleText(evt.data["Raw-Report"]);
 
-      var info = "";
+      let info = "";
       for (var i in evt.data.Info) {
         info = info + i + ": "+ (evt.data.Info[i] == "" ? "---" : evt.data.Info[i]) + "\n";
       }
-      // console.log(info);
       ui.setMetarInfoText(info);
 
-      var translate = "";
-      for (var i in evt.data.Translations) {
+      let translate = "";
+      let remarks = "";
+      for (let i in evt.data.Translations) {
         if (i === "Remarks") {
-          translate += "Remarks:\n"
-          for (var j in evt.data.Translations.Remarks) {
-            translate += "    " + j + ": " + evt.data.Translations.Remarks[j] + "\n"; 
+          remarks += "Remarks:\n\n";
+          if (Object.keys(evt.data.Translations.Remarks).length === 0) {
+            remarks += "---\n\n";
+          } else {
+            for (let j in evt.data.Translations.Remarks) {
+              remarks += j + ":\n" + evt.data.Translations.Remarks[j] + "\n\n"; 
+            }
           }
         } else {
-          translate += i + ": " + (evt.data.Translations[i] == "" ? "---" : evt.data.Translations[i]) + "\n";
+          translate += i + ":\n" + (evt.data.Translations[i] == "" ? "---" : evt.data.Translations[i]) + "\n\n";
         }
       }
-      // console.log(translate);
+      
+      remarks = remarks.slice(0, -2);
+      translate = translate.slice(0, -2);
       ui.setMetarTranslateText(translate);
+      
+      ui.setMetarRemarksText(remarks);
 
       ui.showScrollview();
     }
@@ -72,7 +79,7 @@ messaging.peerSocket.onmessage = evt => {
   }
 }
 
-ui.locationButton.onclick = function(evt) {
+ui.locationButton.onclick = evt => {
   state = "loading-location";
   haptics.vibration.start("confirmation");
   
@@ -80,7 +87,7 @@ ui.locationButton.onclick = function(evt) {
     clearTimeout(timer);
     timerSet = false;
   }
-  var timer = setTimeout(function() {
+  var timer = setTimeout(() => {
     if (state == "loading-location") {
       state = "failed";
       ui.loadingText.text = "This is taking a while... Check your Internet connection and connection to your phone.";

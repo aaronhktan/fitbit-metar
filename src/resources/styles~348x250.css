@@ -9,7 +9,6 @@
   font-weight: bold;
   text-anchor: middle;
   text-length: 99;
-  x: 0;
   y: 12;
 }
 
@@ -31,8 +30,8 @@
   text-length: 99;
 }
 
-#scrollview {
-  display: none;
+#panoramaview {
+  display: inline;
 }
 
 #metar-title {
@@ -41,7 +40,7 @@
   font-family: System-Regular;
   font-weight: bold;
   text-anchor: middle;
-  text-length: 99;
+  text-length: 500;
 }
 
 #metar-info {
@@ -50,7 +49,7 @@
   font-family: System-Regular;
   font-weight: bold;
   text-anchor: middle;
-  text-length: 999;
+  text-length: 500;
 }
 
 #metar-translate {
@@ -59,5 +58,14 @@
   font-family: System-Regular;
   font-weight: bold;
   text-anchor: middle;
-  text-length: 999;
+  text-length: 600;
+}
+
+#metar-remarks {
+  fill: white;
+  font-size: 25;
+  font-family: System-Regular;
+  font-weight: bold;
+  text-anchor: middle;
+  text-length: 600;
 }
