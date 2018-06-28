@@ -13,11 +13,11 @@
 }
 
 #location {
-  y: 164;
+  y: 159;
 }
 
 #favourite {
-  y: 233;
+  y: 228;
 }
 
 #station-list {
@@ -26,7 +26,6 @@
 
 #station-text {
   fill: white;
-  x: 5%;
   font-size: 32;
   text-length: 10;
 }
@@ -37,7 +36,6 @@
 
 #info-tile-text {
   fill: deepskyblue;
-  x: 5%;
   font-size: 25;
   text-length: 50;
 }
@@ -82,7 +80,16 @@
   text-length: 500;
 }
 
-#metar-translate {
+#virtual-title {
+  fill: white;
+  font-size: 25;
+  font-family: System-Regular;
+  font-weight: bold;
+  text-anchor: middle;
+  text-length: 600;
+}
+
+#virtual-text {
   fill: white;
   font-size: 25;
   font-family: System-Regular;

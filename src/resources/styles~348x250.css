@@ -82,7 +82,16 @@
   text-length: 500;
 }
 
-#metar-translate {
+#virtual-title {
+  fill: white;
+  font-size: 25;
+  font-family: System-Regular;
+  font-weight: bold;
+  text-anchor: middle;
+  text-length: 600;
+}
+
+#virtual-text {
   fill: white;
   font-size: 25;
   font-family: System-Regular;

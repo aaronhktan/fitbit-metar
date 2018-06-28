@@ -12,7 +12,8 @@ function mySettings(props) {
             {color: 'gold'},
             {color: 'aquamarine'},
             {color: 'deepskyblue'},
-            {color: 'plum'}
+            {color: 'plum'},
+            {color: 'white'}
           ]}
         />
       </Section>

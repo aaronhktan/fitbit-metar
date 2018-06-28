@@ -16,9 +16,9 @@ var timer, timerSet = false;
 document.onkeypress = evt => {
   if (evt.key == 'back') {
     if (state == 'complete' || state == 'failed' || state == 'list') {
+      ui.showMainMenu(state);
       state = 'main';
       evt.preventDefault();
-      ui.showMainMenu();
     }
   }
 }
@@ -35,7 +35,7 @@ messaging.peerSocket.onopen = showMainMenu;
 messaging.peerSocket.onmessage = evt => {
   if (evt.data.key == 'primary-color') {
     let color = JSON.parse(evt.data.newValue);
-    ui.metarTitle.style.fill = color;
+    ui.accentColour = color;
   } else if (evt.data.key == 'station-identifier') {
     // THIS IS NOW DEPRECATED AND KEPT ONLY FOR COMPATIBILITY WITH VERSION TWO AND BELOW
     favouriteStations[0] = JSON.parse(evt.data.newValue).name;
@@ -50,34 +50,50 @@ messaging.peerSocket.onmessage = evt => {
       state = 'complete';
       ui.setMetarTitleText(evt.data['Raw-Report']);
 
-      let info = '';
-      for (var i in evt.data.Info) {
-        info = info + i + ': '+ (evt.data.Info[i] == '' ? '---' : evt.data.Info[i]) + '\n';
+      // Get METAR metadata
+      let info = [];
+      let index = 0;
+      for (let key in evt.data.Info) {
+        info[index] = {
+          'title': key,
+          'text': evt.data.Info[key],
+        }
+        index++;
       }
       ui.setMetarInfoText(info);
-
-      let translate = '';
-      let remarks = '';
-      for (let i in evt.data.Translations) {
-        if (i === 'Remarks') {
-          remarks += 'Remarks:\n\n';
-          if (Object.keys(evt.data.Translations.Remarks).length === 0) {
-            remarks += '---\n\n';
-          } else {
-            for (let j in evt.data.Translations.Remarks) {
-              remarks += j + ':\n' + evt.data.Translations.Remarks[j] + '\n\n'; 
-            }
+ 
+      // Get remarks
+      let remarks = [];
+      index = 0;
+      if (Object.keys(evt.data.Translations.Remarks).length === 0) {
+        remarks[index] = {
+          'title': 'Remarks',
+          'text': '---',
+        }
+      } else {
+        for (let key in evt.data.Translations.Remarks) {
+          remarks[index] = {
+            'title': key,
+            'text': evt.data.Translations.Remarks[key],
           }
-        } else {
-          translate += i + ':\n' + (evt.data.Translations[i] == '' ? '---' : evt.data.Translations[i]) + '\n\n';
+          index++;
         }
       }
-      
-      remarks = remarks.slice(0, -2);
-      translate = translate.slice(0, -2);
-      ui.setMetarTranslateText(translate);
-      
       ui.setMetarRemarksText(remarks);
+      
+      delete evt.data.Translations.Remarks;
+
+      // Get translation
+      let translate = [];
+      index = 0;
+      for (let key in evt.data.Translations) {
+        translate[index] = {
+          'title': key,
+          'text': evt.data.Translations[key],
+        }
+        index++;
+      }
+      ui.setMetarTranslateText(translate);
 
       ui.showScrollview();
     }
@@ -122,7 +138,7 @@ ui.favouriteButton.onclick = evt => {
     ui.showStationList(favouriteStations);
   } else {
     state = 'complete';
-    ui.loadingText.text = 'No favourite station set; check your settings!';
+    ui.loadingText.text = 'No favourite stations set; add some on your phone.';
     ui.showLoadingScreen();
   }
 }

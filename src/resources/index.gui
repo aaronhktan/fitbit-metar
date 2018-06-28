@@ -4,10 +4,19 @@
             pointer-events="none" system-events="all">
       <rect id="touch-tile" pointer-events="all" x="0" y="0" width="100%"
             height="100%-1" fill="black" opacity="0.25" />
-      <text id="station-text" y="65%" pointer-events="none"/>
+      <text id="station-text" x="5%" y="65%" pointer-events="none"/>
       <text id="station-flag-1" class="station-flag" x="95%" y="65%" text-anchor="end" pointer-events="none">🌎</text>
       <text id="station-flag-2" class="station-flag" x="95%" y="65%" text-anchor="end" pointer-events="none">🌍</text>
       <text id="station-flag-3" class="station-flag" x="95%" y="65%" text-anchor="end" pointer-events="none">🌏</text>
+      <rect id="tile-divider-bottom" class="tile-divider-bottom" />
+    </symbol>
+    
+    <!-- Must have height set for the tile list item! -->
+    <symbol id="virtual-tile-item" href="#tile-list-item" focusable="false"
+            pointer-events="none" system-events="all" display="none"
+            height="80" width="100%">
+      <text id="virtual-title" x="5%" y="30" height="20" text-anchor="start" />
+      <textarea id="virtual-text" x="10%" y="30" width="85%" height="50%" text-anchor="end" />
       <rect id="tile-divider-bottom" class="tile-divider-bottom" />
     </symbol>
   </defs>
@@ -25,41 +34,15 @@
     <set href="text" attributeName="pointer-events" to="none" />
   </use>
   
-  <use id="hidden-metar-translate" href="#dynamic-textarea">
+  <use id="hidden-textarea" href="#dynamic-textarea">
     <set href="text" attributeName="font-family" to="System-Regular" />
     <set href="text" attributeName="font-size" to="25" />
     <set href="text" attributeName="font-weight" to="bold" />
     <set href="text" attributeName="text-length" to="999" />
     <set href="text" attributeName="fill" to="white" />
-    <set href="text" attributeName="x" to="5%" />
+    <set href="text" attributeName="x" to="10%" />
     <set href="text" attributeName="y" to="0" />
-    <set href="text" attributeName="width" to="90%" />
-    <set href="text" attributeName="opacity" to="0" />
-    <set href="text" attributeName="pointer-events" to="none" />
-  </use>
-  
-  <use id="hidden-metar-info" href="#dynamic-textarea">
-    <set href="text" attributeName="font-family" to="System-Regular" />
-    <set href="text" attributeName="font-size" to="25" />
-    <set href="text" attributeName="font-weight" to="bold" />
-    <set href="text" attributeName="text-length" to="999" />
-    <set href="text" attributeName="fill" to="white" />
-    <set href="text" attributeName="x" to="5%" />
-    <set href="text" attributeName="y" to="0" />
-    <set href="text" attributeName="width" to="90%" />
-    <set href="text" attributeName="opacity" to="0" />
-    <set href="text" attributeName="pointer-events" to="none" />
-  </use>
-  
-  <use id="hidden-metar-remarks" href="#dynamic-textarea">
-    <set href="text" attributeName="font-family" to="System-Regular" />
-    <set href="text" attributeName="font-size" to="25" />
-    <set href="text" attributeName="font-weight" to="bold" />
-    <set href="text" attributeName="text-length" to="999" />
-    <set href="text" attributeName="fill" to="white" />
-    <set href="text" attributeName="x" to="5%" />
-    <set href="text" attributeName="y" to="0" />
-    <set href="text" attributeName="width" to="90%" />
+    <set href="text" attributeName="width" to="85%" />
     <set href="text" attributeName="opacity" to="0" />
     <set href="text" attributeName="pointer-events" to="none" />
   </use>
@@ -70,17 +53,21 @@
           text-anchor="middle"
           display-align="center">Get METAR for...
     </textarea>
-    <use id="location" class="button" href="#square-button-icon" fill="fb-cyan">
+    <use id="location" class="button" href="#square-button-icon" fill="deepskyblue">
       <set href="#text"  attributeName="text-buffer" to="Location" />
       <set href="#image" attributeName="href" to="location.png" />
     </use>
-    <use id="favourite" class="button" href="#square-button-icon" fill="fb-blue">
+    <use id="favourite" class="button" href="#square-button-icon" fill="dodgerblue">
       <set href="#text"  attributeName="text-buffer" to="Favourites" />
       <set href="#image" attributeName="href" to="favourite.png" />
     </use>
   </g>
   
   <use id="station-list" href="#tile-list">
+    <animate attributeName="y" begin="enable" from="50" to="0" dur="0.2" easing="ease-out" final="keep" />
+    <animate attributeName="opacity" begin="enable" from="0" to="1" dur="0.2" easing="ease-out" final="keep" />
+    <animate attributeName="y" begin="disable" from="0" to="50" dur="0.2" easing="ease-out" final="keep" />
+    <animate attributeName="opacity" begin="disable" from="1" to="0" dur="0.2" easing="ease-out" final="keep" />
     <var id="reorder-enabled" value="0" />
     <var id="peek-enabled" value="0" />
     <var id="separator-height-bottom" value="2" />
@@ -106,15 +93,21 @@
   </use>
   
   <g id="loading">
+    <animate attributeName="opacity" begin="enable" from="0" to="1" dur="0.5" easing="ease-out" final="keep" />
     <textarea id="loading-text"
               text-anchor="middle"
-              x="5%" width="90%"
+              x="5%" y="0"
+              width="90%" height="100%"
               display-align="center">Waiting for connection to phone...
     </textarea>
     <image x="50%-70" y="50%-70" width="140" height="140" href="loading.png" load="sync" />
   </g>
 
-  <use id="panoramaview" href="#panoramaview">    
+  <use id="panoramaview" href="#panoramaview">
+    <animate attributeName="y" begin="enable" from="50" to="0" dur="0.2" easing="ease-out" final="keep" />
+    <animate attributeName="opacity" begin="enable" from="0" to="1" dur="0.2" easing="ease-out" final="keep" />
+    <animate attributeName="y" begin="disable" from="0" to="50" dur="0.2" easing="ease-out" final="keep" />
+    <animate attributeName="opacity" begin="disable" from="1" to="0" dur="0.2" easing="ease-out" final="keep" />
     <use id="view-1" href="#panoramaview-item">
        <use href="#scrollview">
         <use id="scrollview-1" href="#scrollview-item">
@@ -127,37 +120,61 @@
         </use>
       </use>
     </use>
+
     <use id="view-2" href="#panoramaview-item">
-     <use href="#scrollview">
-      <use id="scrollview-2" href="#scrollview-item">
-        <textarea id="metar-info"
-                  x="5%" y="30"
-                  height="100%" width="90%"
-                  text-anchor="start"
-                  display-align="before">Info...</textarea>
-       </use>
+      <use id="virtual-list-2" href="#tile-list" y="30" height="100%-30">
+        <var id="virtual" value="1" />
+        <var id="separator-height-bottom" value="1" />
+        <use id="info-pool" href="#tile-list-pool">
+          <use id="info-pool[0]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="info-pool[1]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="info-pool[2]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="info-pool[3]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="info-pool[4]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="info-pool[5]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="info-pool[6]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="info-pool[7]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="info-pool[8]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="info-pool[9]" href="#virtual-tile-item" class="tile-list-item" />
+        </use>
       </use>
     </use>
+ 
     <use id="view-3" href="#panoramaview-item">
-     <use href="#scrollview">
-      <use id="scrollview-3" href="#scrollview-item">
-        <textarea id="metar-translate"
-                  x="5%" y="30"
-                  height="100%" width="90%"
-                  text-anchor="start"
-                  display-align="before">Translation...</textarea>
-       </use>
+      <use id="virtual-list-3" href="#tile-list" y="30" height="100%-30">
+        <var id="virtual" value="1" />
+        <var id="separator-height-bottom" value="1" />
+        <use id="translate-pool" href="#tile-list-pool">
+          <use id="translate-pool[0]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="translate-pool[1]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="translate-pool[2]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="translate-pool[3]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="translate-pool[4]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="translate-pool[5]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="translate-pool[6]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="translate-pool[7]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="translate-pool[8]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="translate-pool[9]" href="#virtual-tile-item" class="tile-list-item" />
+        </use>
       </use>
     </use>
+
     <use id="view-4" href="#panoramaview-item">
-     <use href="#scrollview">
-      <use id="scrollview-4" href="#scrollview-item">
-        <textarea id="metar-remarks"
-                  x="5%" y="30"
-                  height="100%" width="90%"
-                  text-anchor="start"
-                  display-align="before">Remarks...</textarea>
-       </use>
+      <use id="virtual-list-4" href="#tile-list" y="30" height="100%-30">
+        <var id="virtual" value="1" />
+        <var id="separator-height-bottom" value="1" />
+        <use id="remarks-pool" href="#tile-list-pool">
+          <use id="remarks-pool[0]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="remarks-pool[1]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="remarks-pool[2]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="remarks-pool[3]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="remarks-pool[4]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="remarks-pool[5]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="remarks-pool[6]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="remarks-pool[7]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="remarks-pool[8]" href="#virtual-tile-item" class="tile-list-item" />
+          <use id="remarks-pool[9]" href="#virtual-tile-item" class="tile-list-item" />
+        </use>
       </use>
     </use>
 
