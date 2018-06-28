@@ -3,9 +3,9 @@ function mySettings(props) {
     <Page>
       <Section
         description={<Text> Choose the colour your METAR will appear in here.</Text>}
-        title={<Text bold align="center">Primary Colour Selection</Text>}>
+        title={<Text bold align='center'>Primary Colour Selection</Text>}>
         <ColorSelect
-          settingsKey="primary-color"
+          settingsKey='primary-color'
           colors={[
             {color: 'tomato'},
             {color: 'sandybrown'},
@@ -17,13 +17,18 @@ function mySettings(props) {
         />
       </Section>
       <Section
-        description={<Text> Enter your favourite METAR station.</Text>}
-        title={<Text bold align="center">METAR Settings</Text>}>
-        <TextInput
-          title="Station Identifier"
-          label="Station Identifier"
-          placeholder="e.g. CYOW"
-          settingsKey="station-identifier"
+        description={<Text> Enter up to five of your favourite METAR stations.</Text>}
+        title={<Text bold align='center'>METAR Settings</Text>}>
+        <AdditiveList
+          settingsKey='station-identifiers'
+          maxItems='5'
+          addAction= {
+            <TextInput
+              title='Favourite Stations'
+              label='Add a station'
+              placeholder='e.g. CYOW'
+            />
+          }
         />
       </Section>
     </Page>

@@ -5,10 +5,13 @@ export default class UI {
   _mainMenu;
   _locationButton;
   _favouriteButton;
+  _stationList;
+  _tiles;
+  _infoTile;
+  _touchTiles;
   _loadingGroup;
   _loadingText;
-  _panoramaGroup;
-  _panoramaview;
+  _panoramaView;
   _metarTitle;
   _hiddenMetarTitle;
   _metarTitleView;
@@ -30,11 +33,13 @@ export default class UI {
     this._mainMenu = document.getElementById('main-menu');
     this._locationButton = document.getElementById('location');
     this._favouriteButton = document.getElementById('favourite');
+    this._stationList = document.getElementById('station-list');
+    this._touchTiles = document.getElementsByClassName('touch-tile');
+    this._infoTile = document.getElementById('info-tile');
     this._loadingGroup = document.getElementById('loading');
     this._loadingText = document.getElementById('loading-text');
-    this._panoramaGroup = document.getElementById('panoramaview');
-    this._panoramaGroup.style.display = 'none';
-    this._panoramaview = document.getElementById('panoramaview');
+    this._panoramaView = document.getElementById('panoramaview');
+    this._panoramaView.style.display = 'none';
     this._metarTitle = document.getElementById('metar-title');
     this._hiddenMetarTitle = document.getElementById('hidden-metar-title');
     this._metarTitleView = document.getElementById('view-1');
@@ -51,25 +56,76 @@ export default class UI {
     this._hiddenMetarRemarks = document.getElementById('hidden-metar-remarks');
     this._metarRemarksView = document.getElementById('view-4');
     this._metarRemarksScroll = document.getElementById('scrollview-4');
+    
+    this._tiles = [];
+    for (let i = 0; i < 5; i++) {
+      const tile = document.getElementById(`station-${i}`);
+      if (tile === undefined) break;
+      this._tiles[i] = tile;
+    }
   }
   
   showMainMenu() {
-    this._panoramaGroup.style.display = 'none';
-    this._panoramaview.value = 0;
+    this._panoramaView.style.display = 'none';
+    this._panoramaView.value = 0;
     this._loadingGroup.style.display = 'none';
+    this._stationList.style.display = 'none';
     this._mainMenu.style.display = 'inline';
+  }
+  
+  showStationList(stations) {
+    this._mainMenu.style.display = 'none';
+    this._panoramaView.style.display = 'none';
+    this._loadingGroup.style.display = 'none';
+    
+    this._tiles.forEach((tile, i) => {
+      const station = stations[i];
+      if (station) {
+        tile.style.display = 'inline';
+        tile.getElementById('station-text').text = stations[i];
+        switch (true) {
+          case /[CKMSTckmpst]/.test(stations[i].charAt(0)):
+            tile.getElementById('station-flag-1').style.display = 'inline';
+            tile.getElementById('station-flag-2').style.display = 'none';
+            tile.getElementById('station-flag-3').style.display = 'none';
+            break;
+          case /[BDEFGHLObdefghlo]/.test(stations[i].charAt(0)):
+            tile.getElementById('station-flag-1').style.display = 'none';
+            tile.getElementById('station-flag-2').style.display = 'inline';
+            tile.getElementById('station-flag-3').style.display = 'none';
+            break;
+          case /[ANPRUVWYZanpruvwyz]/.test(stations[i].charAt(0)):
+            tile.getElementById('station-flag-1').style.display = 'none';
+            tile.getElementById('station-flag-2').style.display = 'none';
+            tile.getElementById('station-flag-3').style.display = 'inline';
+            break;
+        }
+      } else {
+        tile.style.display = 'none';
+      }
+    });
+    
+    this._stationList.style.display = 'inline';
+
+    if (stations.length < 5) {
+      this._infoTile.getElementById('info-tile-text').text = 'Add up to five favourites on your phone.';
+    } else {
+      this._infoTile.getElementById('info-tile-text').text = 'Favourite Stations';
+    }
   }
   
   showLoadingScreen() {
     this._mainMenu.style.display = 'none';
-    this._panoramaGroup.style.display = 'none';
+    this._panoramaView.style.display = 'none';
+    this._stationList.style.display = 'none';
     this._loadingGroup.style.display = 'inline';
   }
   
   showScrollview() {
     this._mainMenu.style.display = 'none';
     this._loadingGroup.style.display = 'none';
-    this._panoramaGroup.style.display = 'inline';
+    this._stationList.style.display = 'none';
+    this._panoramaView.style.display = 'inline';
   }
   
   get mainMenu() {
@@ -84,6 +140,10 @@ export default class UI {
     return this._favouriteButton;
   }
   
+  get tiles() {
+    return this._tiles;
+  }
+  
   get loadingScreen() {
     return this._loadingGroup;
   }
@@ -92,8 +152,8 @@ export default class UI {
     return this._loadingText
   }
   
-  get scrollviewScreen() {
-    return this._panoramaGroup;
+  get panoramaView() {
+    return this._panoramaView;
   }
   
   get metarTitle() {
@@ -106,7 +166,7 @@ export default class UI {
     
     this._metarTitle.style.textLength = text.length;
     this._metarTitle.text = text;
-    // Add 5px of padding to top and bottom, subtracting for pagination
+    // Add 5px of padding to top and bottom, subtracting for pagination dots
     let offset = device.modelName == 'Versa' ? 255 : device.screen.height - 45;
     this._metarTitle.height = Math.max(this._hiddenMetarTitle.height + 10, offset);
     

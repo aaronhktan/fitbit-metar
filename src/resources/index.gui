@@ -1,10 +1,14 @@
 <svg class="background">
   <defs>
-    <!-- Template Symbol for the header -->
-    <symbol id="view-header" href="#scrollview-header">
-      <rect fill="inherit" x="0" y="0" width="100%" height="100%"/>
-      <text id="text" x="5" y="50%+10" fill="white" font-size="30"
-        font-weight="bold" />
+    <symbol id="station-tile-item" href="#tile-list-item" focusable="false"
+            pointer-events="none" system-events="all">
+      <rect id="touch-tile" pointer-events="all" x="0" y="0" width="100%"
+            height="100%-1" fill="black" opacity="0.25" />
+      <text id="station-text" y="65%" pointer-events="none"/>
+      <text id="station-flag-1" class="station-flag" x="95%" y="65%" text-anchor="end" pointer-events="none">🌎</text>
+      <text id="station-flag-2" class="station-flag" x="95%" y="65%" text-anchor="end" pointer-events="none">🌍</text>
+      <text id="station-flag-3" class="station-flag" x="95%" y="65%" text-anchor="end" pointer-events="none">🌏</text>
+      <rect id="tile-divider-bottom" class="tile-divider-bottom" />
     </symbol>
   </defs>
   
@@ -70,11 +74,36 @@
       <set href="#text"  attributeName="text-buffer" to="Location" />
       <set href="#image" attributeName="href" to="location.png" />
     </use>
-    <use id="favourite" class="button" href="#square-button-icon" fill="fb-magenta">
-      <set href="#text"  attributeName="text-buffer" to="Favourite" />
+    <use id="favourite" class="button" href="#square-button-icon" fill="fb-blue">
+      <set href="#text"  attributeName="text-buffer" to="Favourites" />
       <set href="#image" attributeName="href" to="favourite.png" />
     </use>
   </g>
+  
+  <use id="station-list" href="#tile-list">
+    <var id="reorder-enabled" value="0" />
+    <var id="peek-enabled" value="0" />
+    <var id="separator-height-bottom" value="2" />
+    <use href="#tile-list-header" class="tile-list-item" id="info-tile" height="30%">
+      <textarea id="info-tile-text" width="90%" x="5%" text-anchor="middle" display-align="center">Add up to five favourites on your phone.</textarea>
+      <rect id="tile-divider-bottom" class="tile-divider-bottom" />
+    </use>
+    <use href="#station-tile-item" class="tile-list-item" id="station-0" height="25%">
+      <set href="station-text" attributeName="text-buffer" to="0" />
+    </use>
+    <use href="#station-tile-item" class="tile-list-item" id="station-1" height="25%">
+      <set href="station-text" attributeName="text-buffer" to="1" />
+    </use>
+    <use href="#station-tile-item" class="tile-list-item" id="station-2" height="25%">
+      <set href="station-text" attributeName="text-buffer" to="2" />
+    </use>
+    <use href="#station-tile-item" class="tile-list-item" id="station-3" height="25%">
+      <set href="station-text" attributeName="text-buffer" to="3" />
+    </use>
+    <use href="#station-tile-item" class="tile-list-item" id="station-4" height="25%">
+      <set href="station-text" attributeName="text-buffer" to="4" />
+    </use>
+  </use>
   
   <g id="loading">
     <textarea id="loading-text"
