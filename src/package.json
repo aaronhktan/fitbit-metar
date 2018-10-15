@@ -1,4 +1,8 @@
 {
+  "devDependencies": {
+    "@fitbit/sdk": "~2.0.1",
+    "@fitbit/sdk-cli": "^1.0.2"
+  },
   "fitbit": {
     "appUUID": "999b12bc-90b7-4839-90a2-4430423ddf07",
     "appType": "app",
@@ -18,5 +22,8 @@
         "name": "METAR"
       }
     }
+  },
+  "scripts": {
+    "build": "fitbit-build"
   }
 }

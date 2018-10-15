@@ -39,7 +39,7 @@ function sendMetarData(param) {
       let sendJSON = {
         'Info': json.Info,
         'Raw-Report': json['Raw-Report'],
-        'Translations': json.Translations,
+        'Translations': json.Translate,
       }
       sendVal(sendJSON);
       resolve(sendJSON);

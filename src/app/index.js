@@ -46,7 +46,7 @@ messaging.peerSocket.onmessage = evt => {
     }
   } else if (evt.data.hasOwnProperty('Raw-Report')) {
     if (state == 'loading-location' || 
-        (state == 'loading-favourite' && evt.data.Info.ICAO == currentStation)) {
+        (state == 'loading-favourite' && evt.data.Info.Icao == currentStation)) {
       state = 'complete';
       ui.setMetarTitleText(evt.data['Raw-Report']);
 
