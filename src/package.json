@@ -4,9 +4,9 @@
     "@fitbit/sdk-cli": "^1.0.2"
   },
   "fitbit": {
-    "appUUID": "999b12bc-90b7-4839-90a2-4430423ddf07",
+    "appUUID": "999b12bc-90b7-4839-90a2-4430423ddf08",
     "appType": "app",
-    "appDisplayName": "METAR",
+    "appDisplayName": "METAR Beta",
     "iconFile": "resources/icon.png",
     "wipeColor": "#03a9f4",
     "requestedPermissions": [
@@ -19,7 +19,7 @@
     ],
     "i18n": {
       "en": {
-        "name": "METAR"
+        "name": "METAR Beta"
       }
     }
   },
