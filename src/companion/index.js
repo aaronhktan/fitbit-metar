@@ -11,18 +11,18 @@ messaging.peerSocket.onopen = () => {
 }
 
 messaging.peerSocket.onmessage = evt => {
-  var info = evt.data.value;
-  var url = '';
+  let info = evt.data.value;
+  let url = '';
   if (info === 'location') {
     geolocation.getCurrentPosition(position => {
-      url = 'https://avwx.rest/api/metar/' + position.coords.latitude + ',' + position.coords.longitude + '?options=info,translate';
+      url = 'https://avwx.rest/api/legacy/metar/' + position.coords.latitude + ',' + position.coords.longitude + '?options=info,translate';
       sendMetarData(url);
     });
   } else if (info === 'favourite') {
-    url = 'https://avwx.rest/api/metar/' + JSON.parse(settingsStorage.getItem('station-identifier')).name + '?options=info,translate';
+    url = 'https://avwx.rest/api/legacy/metar/' + JSON.parse(settingsStorage.getItem('station-identifier')).name + '?options=info,translate';
     sendMetarData(url);
   } else if (info) {
-    url = 'https://avwx.rest/api/metar/' + info + '?options=info,translate';
+    url = 'https://avwx.rest/api/legacy/metar/' + info + '?options=info,translate';
     sendMetarData(url);
   }
 }
