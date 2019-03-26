@@ -94,6 +94,7 @@
   
   <g id="loading">
     <animate attributeName="opacity" begin="enable" from="0" to="1" dur="0.5" easing="ease-out" final="keep" />
+    <animate attributeName="opacity" begin="disable" from="1" to="0" dur="0.5" easing="ease-out" final="keep" />
     <textarea id="loading-text"
               text-anchor="middle"
               x="5%" y="0"

@@ -100,6 +100,13 @@ export default class UI {
           this._stationList.style.display = 'none';
         }, 200);
         break;
+      case 'emptylist':
+        this._loadingGroup.style.display = 'inline';
+        this._loadingGroup.animate('disable');
+        setTimeout(() => {
+          this._loadingGroup.style.display = 'none';
+        }, 200);
+        break;
     }
   }
   

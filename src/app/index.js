@@ -15,7 +15,8 @@ var timer, timerSet = false;
 
 document.onkeypress = evt => {
   if (evt.key == 'back') {
-    if (state == 'complete' || state == 'failed' || state == 'list') {
+    console.log(state);
+    if (state == 'complete' || state == 'failed' || state == 'list' || state == 'emptylist') {
       ui.showMainMenu(state);
       state = 'main';
       evt.preventDefault();
@@ -137,7 +138,7 @@ ui.favouriteButton.onclick = evt => {
     state = 'list';
     ui.showStationList(favouriteStations);
   } else {
-    state = 'complete';
+    state = 'emptylist';
     ui.loadingText.text = 'No favourite stations set; add some on your phone.';
     ui.showLoadingScreen();
   }
