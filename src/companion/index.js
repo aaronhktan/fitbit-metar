@@ -15,14 +15,14 @@ messaging.peerSocket.onmessage = evt => {
   let url = '';
   if (info === 'location') {
     geolocation.getCurrentPosition(position => {
-      url = 'https://avwx.rest/api/legacy/metar/' + position.coords.latitude + ',' + position.coords.longitude + '?options=info,translate';
+      url = 'https://avwx.rest/api/preview/metar/' + position.coords.latitude + ',' + position.coords.longitude + '?options=info,translate';
       sendMetarData(url);
     });
   } else if (info === 'favourite') {
-    url = 'https://avwx.rest/api/legacy/metar/' + JSON.parse(settingsStorage.getItem('station-identifier')).name + '?options=info,translate';
+    url = 'https://avwx.rest/api/preview/metar/' + JSON.parse(settingsStorage.getItem('station-identifier')).name + '?options=info,translate';
     sendMetarData(url);
   } else if (info) {
-    url = 'https://avwx.rest/api/legacy/metar/' + info + '?options=info,translate';
+    url = 'https://avwx.rest/api/preview/metar/' + info + '?options=info,translate';
     sendMetarData(url);
   }
 }
@@ -32,14 +32,15 @@ function sendMetarData(param) {
     fetch(param).then(response => {
       return response.json();
     }).then(json => {
+      // console.log(json);
       if (json.hasOwnProperty('Error')) {
         sendVal('error');
         reject('Invalid ICAO!');
       }
       let sendJSON = {
-        'Info': json.Info,
-        'Raw-Report': json['Raw-Report'],
-        'Translations': json.Translate,
+        'Info': json.info,
+        'Raw-Report': json.raw,
+        'Translations': json.translate,
       }
       sendVal(sendJSON);
       resolve(sendJSON);

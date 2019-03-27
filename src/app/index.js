@@ -47,7 +47,7 @@ messaging.peerSocket.onmessage = evt => {
     }
   } else if (evt.data.hasOwnProperty('Raw-Report')) {
     if (state == 'loading-location' || 
-        (state == 'loading-favourite' && evt.data.Info.Icao == currentStation)) {
+        (state == 'loading-favourite' && evt.data.Info.icao == currentStation)) {
       state = 'complete';
       ui.setMetarTitleText(evt.data['Raw-Report']);
 
@@ -55,8 +55,12 @@ messaging.peerSocket.onmessage = evt => {
       let info = [];
       let index = 0;
       for (let key in evt.data.Info) {
+        if (key == "runways") {
+          continue;
+        }
+
         info[index] = {
-          'title': key,
+          'title': key.charAt(0).toUpperCase() + key.slice(1),
           'text': evt.data.Info[key],
         }
         index++;
@@ -66,30 +70,30 @@ messaging.peerSocket.onmessage = evt => {
       // Get remarks
       let remarks = [];
       index = 0;
-      if (Object.keys(evt.data.Translations.Remarks).length === 0) {
+      if (Object.keys(evt.data.Translations.remarks).length === 0) {
         remarks[index] = {
           'title': 'Remarks',
           'text': '---',
         }
       } else {
-        for (let key in evt.data.Translations.Remarks) {
+        for (let key in evt.data.Translations.remarks) {
           remarks[index] = {
-            'title': key,
-            'text': evt.data.Translations.Remarks[key],
+            'title': key.charAt(0).toUpperCase() + key.slice(1),
+            'text': evt.data.Translations.remarks[key],
           }
           index++;
         }
       }
       ui.setMetarRemarksText(remarks);
       
-      delete evt.data.Translations.Remarks;
+      delete evt.data.Translations.remarks;
 
       // Get translation
       let translate = [];
       index = 0;
       for (let key in evt.data.Translations) {
         translate[index] = {
-          'title': key,
+          'title': key.charAt(0).toUpperCase() + key.slice(1),
           'text': evt.data.Translations[key],
         }
         index++;
