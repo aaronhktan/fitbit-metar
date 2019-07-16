@@ -48,22 +48,34 @@ function sendMetarData(param) {
       return response.json();
     }).then(json => {
       // console.log(JSON.stringify(json));
-      if (json.hasOwnProperty('Error')) {
-        sendVal('error');
-        reject('Invalid ICAO!');
+      if (json.hasOwnProperty('error')) {
+        let searchString = 'icao=\'';
+        let searchIndex = json.error.indexOf(searchString);
+        if (searchIndex < 0) {
+          sendVal({'key': 'noStation'});
+          return;
+        }
+        let icao = json.error.substr(searchIndex + searchString.length,
+          4);
+        sendVal({
+          'key': 'noMetar',
+          'icao': icao,
+        });
+        return;
       }
       delete json.info.runways;
       delete json.info.type;
       let sendJSON = {
-        'Info': json.info,
-        'Raw-Report': json.raw,
-        'Translations': json.translate,
+        'key': 'metar',
+        'info': json.info,
+        'raw': json.raw,
+        'translate': json.translate,
       }
       sendVal(sendJSON);
       resolve(sendJSON);
     }).catch(error => {
       console.log('Fetching failed due to error: ' + error);
-      sendVal('error');
+      sendVal({'key': 'error'});
       trackEvent({
         propertyId: propertyId,
         clientId: clientId,
