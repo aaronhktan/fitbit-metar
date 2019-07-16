@@ -174,7 +174,7 @@ ui.tiles.forEach((element, index) => {
     timerSet = true;
 
     state = 'loading-favourite';
-    let favouriteStation = element.getElementById('station-text').text;
+    let favouriteStation = element.getElementById('station-text').text.trim();
     currentStation = favouriteStation;
     ui.loadingText.text = 'Grabbing METAR for station ' + favouriteStation + '...';
     let data = {

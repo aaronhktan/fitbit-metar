@@ -33,10 +33,11 @@ messaging.peerSocket.onmessage = evt => {
       sendMetarData(url);
     });
   } else if (info === 'favourite') {
+    // No longer used; kept for backwards compatibility
     url = 'https://avwx.rest/api/metar/' + JSON.parse(settingsStorage.getItem('station-identifier')).name + '?options=info,translate';
     sendMetarData(url);
   } else if (info) {
-    url = 'https://avwx.rest/api/metar/' + info + '?options=info,translate';
+    url = 'https://avwx.rest/api/metar/' + info.trim() + '?options=info,translate';
     sendMetarData(url);
   }
 }
