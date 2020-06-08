@@ -6,7 +6,7 @@ import { settingsStorage } from 'settings';
 
 import { sendVal } from '../common/utils.js';
 import { trackEvent } from './track.js';
-import { propertyId } from './keys.js';
+import { propertyId, metarKey } from './keys.js';
 
 var locationString = '';
 
@@ -29,12 +29,12 @@ messaging.peerSocket.onmessage = evt => {
   let url = '';
   if (info === 'location') {
     geolocation.getCurrentPosition(position => {
-      url = 'https://avwx.rest/api/metar/' + position.coords.latitude + ',' + position.coords.longitude + '?options=info,translate';
+      url = `https://avwx.rest/api/metar/${position.coords.latitude},${position.coords.longitude}?options=info,translate&token=${metarKey}`;
       sendMetarData(url);
     });
   } else if (info === 'favourite') {
     // No longer used; kept for backwards compatibility
-    url = 'https://avwx.rest/api/metar/' + JSON.parse(settingsStorage.getItem('station-identifier')).name + '?options=info,translate';
+    url = `https://avwx.rest/api/metar/${JSON.parse(settingsStorage.getItem('station-identifier')).name}?options=info,translate&token=${metarKey}`;
     sendMetarData(url);
   } else if (info) {
     url = 'https://avwx.rest/api/metar/' + info.trim() + '?options=info,translate';
