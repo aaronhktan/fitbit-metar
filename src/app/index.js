@@ -34,78 +34,96 @@ function showMainMenu() {
 messaging.peerSocket.onopen = showMainMenu;
 
 messaging.peerSocket.onmessage = evt => {
-  if (evt.data.key == 'primary-color') {
-    let color = JSON.parse(evt.data.newValue);
-    ui.accentColour = color;
-  } else if (evt.data.key == 'station-identifier') {
-    // THIS IS NOW DEPRECATED AND KEPT ONLY FOR COMPATIBILITY WITH VERSION TWO AND BELOW
-    favouriteStations[0] = JSON.parse(evt.data.newValue).name;
-  } else if (evt.data.key == 'station-identifiers') {
-    favouriteStations = [];
-    for (let station in JSON.parse(evt.data.newValue)) {
-      favouriteStations.push(JSON.parse(evt.data.newValue)[station].name);
-    }
-  } else if (evt.data.hasOwnProperty('Raw-Report')) {
-    if (state == 'loading-location' || 
-        (state == 'loading-favourite' && evt.data.Info.icao == currentStation)) {
+  switch (evt.data.key) {
+    case 'primary-color':
+      let color = JSON.parse(evt.data.newValue);
+      ui.accentColour = color;
+      break;
+    case 'station-identifier':
+      // THIS IS NOW DEPRECATED AND KEPT ONLY FOR COMPATIBILITY WITH VERSION TWO AND BELOW
+      favouriteStations[0] = JSON.parse(evt.data.newValue).name;
+      break;
+    case 'station-identifiers':
+      favouriteStations = [];
+      for (let station in JSON.parse(evt.data.newValue)) {
+        favouriteStations.push(JSON.parse(evt.data.newValue)[station].name);
+      }
+      break;
+    case 'metar':
+      if (state != 'loading-location' &&
+          !(state == 'loading-favourite' && evt.data.info.icao == currentStation)) {
+        break;
+      }
       state = 'complete';
-      ui.setMetarTitleText(evt.data['Raw-Report']);
+      ui.setMetarTitleText(evt.data['raw']);
 
       // Get METAR metadata
       let info = [];
       let index = 0;
-      for (let key in evt.data.Info) {
+      for (let key in evt.data.info) {
         if (key == "runways") {
           continue;
         }
 
         info[index] = {
           'title': key.charAt(0).toUpperCase() + key.slice(1),
-          'text': evt.data.Info[key],
+          'text': evt.data.info[key],
         }
         index++;
       }
+      console.log(JSON.stringify(info));
       ui.setMetarInfoText(info);
  
       // Get remarks
       let remarks = [];
       index = 0;
-      if (Object.keys(evt.data.Translations.remarks).length === 0) {
+      if (Object.keys(evt.data.translate.remarks).length === 0) {
         remarks[index] = {
           'title': 'Remarks',
           'text': '---',
         }
       } else {
-        for (let key in evt.data.Translations.remarks) {
+        for (let key in evt.data.translate.remarks) {
           remarks[index] = {
             'title': key.charAt(0).toUpperCase() + key.slice(1),
-            'text': evt.data.Translations.remarks[key],
+            'text': evt.data.translate.remarks[key],
           }
           index++;
         }
       }
       ui.setMetarRemarksText(remarks);
       
-      delete evt.data.Translations.remarks;
+      delete evt.data.translate.remarks;
 
       // Get translation
       let translate = [];
       index = 0;
-      for (let key in evt.data.Translations) {
+      for (let key in evt.data.translate) {
         translate[index] = {
           'title': key.charAt(0).toUpperCase() + key.slice(1),
-          'text': evt.data.Translations[key],
+          'text': evt.data.translate[key],
         }
         index++;
       }
       ui.setMetarTranslateText(translate);
 
       ui.showScrollview();
-    }
-  } else {
-    console.log(JSON.stringify(evt.data));
-    state = 'failed';
-    ui.loadingText.text = 'Uh oh! Something went wrong. Try relaunching the app.';
+      break;
+    case 'noMetar':
+      console.log(JSON.stringify(evt.data));
+      state = 'failed';
+      ui.loadingText.text = `No METAR was found for station ${evt.data.icao}.`;
+      break;
+    case 'noStation':
+      console.log(JSON.stringify(evt.data));
+      state = 'failed';
+      ui.loadingText.text = 'No station was found with that name.';
+      break;
+    default:
+      console.log(JSON.stringify(evt.data));
+      state = 'failed';
+      ui.loadingText.text = 'Uh oh! Something went wrong. Try relaunching the app.';
+      break;
   }
 }
 
@@ -174,7 +192,7 @@ ui.tiles.forEach((element, index) => {
     timerSet = true;
 
     state = 'loading-favourite';
-    let favouriteStation = element.getElementById('station-text').text;
+    let favouriteStation = element.getElementById('station-text').text.trim();
     currentStation = favouriteStation;
     ui.loadingText.text = 'Grabbing METAR for station ' + favouriteStation + '...';
     let data = {

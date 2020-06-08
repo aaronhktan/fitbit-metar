@@ -6,7 +6,7 @@ import { settingsStorage } from 'settings';
 
 import { sendVal } from '../common/utils.js';
 import { trackEvent } from './track.js';
-import { propertyId } from './keys.js';
+import { propertyId, metarKey } from './keys.js';
 
 var locationString = '';
 
@@ -29,14 +29,15 @@ messaging.peerSocket.onmessage = evt => {
   let url = '';
   if (info === 'location') {
     geolocation.getCurrentPosition(position => {
-      url = 'https://avwx.rest/api/metar/' + position.coords.latitude + ',' + position.coords.longitude + '?options=info,translate';
+      url = `https://avwx.rest/api/metar/${position.coords.latitude},${position.coords.longitude}?options=info,translate&token=${metarKey}`;
       sendMetarData(url);
     });
   } else if (info === 'favourite') {
-    url = 'https://avwx.rest/api/metar/' + JSON.parse(settingsStorage.getItem('station-identifier')).name + '?options=info,translate';
+    // No longer used; kept for backwards compatibility
+    url = `https://avwx.rest/api/metar/${JSON.parse(settingsStorage.getItem('station-identifier')).name}?options=info,translate&token=${metarKey}`;
     sendMetarData(url);
   } else if (info) {
-    url = 'https://avwx.rest/api/metar/' + info + '?options=info,translate';
+    url = `https://avwx.rest/api/metar/${info.trim()}?options=info,translate&token=${metarKey}`;
     sendMetarData(url);
   }
 }
@@ -47,22 +48,39 @@ function sendMetarData(param) {
       return response.json();
     }).then(json => {
       // console.log(JSON.stringify(json));
-      if (json.hasOwnProperty('Error')) {
-        sendVal('error');
-        reject('Invalid ICAO!');
+      if (json.hasOwnProperty('error')) {
+        let searchString = 'icao=\'';
+        let searchIndex = json.error.indexOf(searchString);
+        if (searchIndex < 0) {
+          sendVal({'key': 'noStation'});
+          return;
+        }
+        let icao = json.error.substr(searchIndex + searchString.length,
+          4);
+        sendVal({
+          'key': 'noMetar',
+          'icao': icao,
+        });
+        return;
       }
-      delete json.info.runways;
-      delete json.info.type;
+
+      if (json.info.hasOwnProperty('runways')) {
+        delete json.info.runways;
+      }
+      if (json.info.hasOwnProperty('type')) {
+        delete json.info.type;
+      }
       let sendJSON = {
-        'Info': json.info,
-        'Raw-Report': json.raw,
-        'Translations': json.translate,
+        'key': 'metar',
+        'info': json.info,
+        'raw': json.raw,
+        'translate': json.translate,
       }
       sendVal(sendJSON);
       resolve(sendJSON);
     }).catch(error => {
       console.log('Fetching failed due to error: ' + error);
-      sendVal('error');
+      sendVal({'key': 'error'});
       trackEvent({
         propertyId: propertyId,
         clientId: clientId,
