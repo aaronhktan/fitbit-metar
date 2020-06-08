@@ -71,7 +71,6 @@ messaging.peerSocket.onmessage = evt => {
         }
         index++;
       }
-      console.log(JSON.stringify(info));
       ui.setMetarInfoText(info);
  
       // Get remarks

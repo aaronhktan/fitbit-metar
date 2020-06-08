@@ -47,7 +47,6 @@ function sendMetarData(param) {
     fetch(param).then(response => {
       return response.json();
     }).then(json => {
-      // console.log(JSON.stringify(json));
       if (json.hasOwnProperty('error')) {
         let searchString = 'icao=\'';
         let searchIndex = json.error.indexOf(searchString);
@@ -64,12 +63,9 @@ function sendMetarData(param) {
         return;
       }
 
-      if (json.info.hasOwnProperty('runways')) {
-        delete json.info.runways;
-      }
-      if (json.info.hasOwnProperty('type')) {
-        delete json.info.type;
-      }
+      delete json.info.runways;
+      delete json.info.type;
+
       let sendJSON = {
         'key': 'metar',
         'info': json.info,
